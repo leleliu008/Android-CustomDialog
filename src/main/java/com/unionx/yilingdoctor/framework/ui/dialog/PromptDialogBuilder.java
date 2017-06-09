@@ -1,0 +1,40 @@
+package com.unionx.yilingdoctor.framework.ui.dialog;
+
+import android.app.Activity;
+import android.graphics.Color;
+import android.widget.EditText;
+
+import com.fpliu.newton.framework.ui.dialog.R;
+
+/**
+ * 提示用户输入框
+ *
+ * @author 792793182@qq.com 2016-04-23.
+ */
+public class PromptDialogBuilder extends CustomDialogBuilder<PromptDialogBuilder, EditText, String> {
+
+    public PromptDialogBuilder(Activity activity) {
+        super(activity);
+    }
+
+    @Override
+    public CustomDialog create() {
+        EditText editText = getView();
+        if (editText == null) {
+            editText = new EditText(getActivity());
+            editText.setTextSize(18);
+            editText.setTextColor(Color.parseColor("#222222"));
+            editText.setBackgroundResource(R.drawable.shape_rounded_rectangle_stoke_gray);
+
+            setView(editText);
+        }
+
+        return super.create();
+    }
+
+
+    @Override
+    protected String getResult() {
+        return getView().getText().toString();
+    }
+}
