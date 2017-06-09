@@ -1,4 +1,4 @@
-package com.unionx.yilingdoctor.framework.ui.dialog;
+package com.fpliu.newton.ui;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -11,7 +11,7 @@ import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.fpliu.newton.framework.ui.dialog.R;
+import com.fpliu.newton.framework.ui.R;
 
 import java.util.List;
 

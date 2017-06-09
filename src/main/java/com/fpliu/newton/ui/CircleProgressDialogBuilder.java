@@ -1,11 +1,11 @@
-package com.unionx.yilingdoctor.framework.ui.dialog;
+package com.fpliu.newton.ui;
 
 import android.app.Activity;
 import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
-import com.fpliu.newton.framework.ui.dialog.R;
+import com.fpliu.newton.framework.ui.R;
 
 /**
  * 使用圆形进度条弹出框

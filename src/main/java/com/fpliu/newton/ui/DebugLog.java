@@ -1,4 +1,4 @@
-package com.unionx.yilingdoctor.framework.ui.dialog;
+package com.fpliu.newton.ui;
 
 import android.os.Build;
 import android.util.Log;

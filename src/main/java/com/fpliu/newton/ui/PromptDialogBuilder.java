@@ -1,10 +1,10 @@
-package com.unionx.yilingdoctor.framework.ui.dialog;
+package com.fpliu.newton.ui;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.widget.EditText;
 
-import com.fpliu.newton.framework.ui.dialog.R;
+import com.fpliu.newton.framework.ui.R;
 
 /**
  * 提示用户输入框
