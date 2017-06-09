@@ -1,4 +1,4 @@
-package com.fpliu.newton.ui;
+package com.fpliu.newton.ui.dialog;
 
 import android.app.Activity;
 import android.graphics.Color;
@@ -10,8 +10,6 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import com.fpliu.newton.framework.ui.R;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.fpliu.newton.ui;
+package com.fpliu.newton.ui.dialog;
 
 import android.app.Activity;
 import android.widget.LinearLayout;

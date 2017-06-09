@@ -1,4 +1,4 @@
-package com.fpliu.newton.ui;
+package com.fpliu.newton.ui.dialog;
 
 import android.os.Build;
 import android.util.Log;

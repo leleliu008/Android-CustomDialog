@@ -1,10 +1,8 @@
-package com.fpliu.newton.ui;
+package com.fpliu.newton.ui.dialog;
 
 import android.app.Activity;
 import android.graphics.Color;
 import android.widget.EditText;
-
-import com.fpliu.newton.framework.ui.R;
 
 /**
  * 提示用户输入框

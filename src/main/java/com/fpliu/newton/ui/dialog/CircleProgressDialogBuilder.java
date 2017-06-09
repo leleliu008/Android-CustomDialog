@@ -1,11 +1,9 @@
-package com.fpliu.newton.ui;
+package com.fpliu.newton.ui.dialog;
 
 import android.app.Activity;
 import android.view.Gravity;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-
-import com.fpliu.newton.framework.ui.R;
 
 /**
  * 使用圆形进度条弹出框
