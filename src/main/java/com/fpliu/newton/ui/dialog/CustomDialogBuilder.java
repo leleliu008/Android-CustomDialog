@@ -158,7 +158,7 @@ public abstract class CustomDialogBuilder<T extends CustomDialogBuilder<T, V, Re
 
             //关闭按钮
             ImageButton closeBtn = new ImageButton(activity);
-            closeBtn.setBackgroundResource(R.drawable.btn_close_normal);
+            closeBtn.setBackgroundResource(R.drawable.cd_btn_close_normal);
             closeBtn.setOnClickListener(v -> onCloseButtonClick(dialog));
 
             RelativeLayout.LayoutParams lp1 = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
@@ -222,9 +222,10 @@ public abstract class CustomDialogBuilder<T extends CustomDialogBuilder<T, V, Re
         if (!TextUtils.isEmpty(positiveButtonText)) {
             Button okBtn = new Button(activity);
             okBtn.setText(positiveButtonText);
+            okBtn.setPadding(0, a, 0, a);
             okBtn.setTextSize(18);
             okBtn.setTextColor(Color.WHITE);
-            okBtn.setBackgroundResource(R.drawable.state_list_rounded_rectangle_solid_yellow);
+            okBtn.setBackgroundResource(R.drawable.cd_state_list_rounded_rectangle_solid_yellow);
             okBtn.setOnClickListener(v -> onPositiveButtonClick(dialog));
             footer.addView(okBtn, lp3);
         }
@@ -232,9 +233,10 @@ public abstract class CustomDialogBuilder<T extends CustomDialogBuilder<T, V, Re
         if (!TextUtils.isEmpty(negativeButtonText)) {
             Button cancelBtn = new Button(activity);
             cancelBtn.setText(negativeButtonText);
+            cancelBtn.setPadding(0, a, 0, a);
             cancelBtn.setTextSize(18);
             cancelBtn.setTextColor(Color.WHITE);
-            cancelBtn.setBackgroundResource(R.drawable.state_list_rounded_rectangle_solid_blue);
+            cancelBtn.setBackgroundResource(R.drawable.cd_state_list_rounded_rectangle_solid_blue);
             cancelBtn.setOnClickListener(v -> onNegativeButtonClick(dialog));
 
             footer.addView(cancelBtn, lp3);

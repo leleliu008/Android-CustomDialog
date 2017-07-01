@@ -25,7 +25,7 @@ public class CircleProgressDialogBuilder extends CustomDialogBuilder<CircleProgr
             layout.setGravity(Gravity.CENTER);
 
             ImageView progressView = new ImageView(activity);
-            progressView.setBackgroundResource(R.drawable.progress_circle);
+            progressView.setBackgroundResource(R.drawable.cd_progress_circle);
             progressView.startAnimation(UIUtil.getRotateAnimation());
 
             int width = UIUtil.dip2px(activity, 50);

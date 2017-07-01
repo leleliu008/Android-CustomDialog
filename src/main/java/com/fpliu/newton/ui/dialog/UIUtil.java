@@ -18,7 +18,7 @@ import android.view.animation.RotateAnimation;
  *
  * @author 792793182@qq.com 2015-06-12
  */
-final class UIUtil {
+public final class UIUtil {
 
     private UIUtil() {
     }
@@ -26,7 +26,7 @@ final class UIUtil {
     /**
      * 根据手机的分辨率从 dip 的单位 转成为 px(像素)
      */
-    static int dip2px(Context context, double dpValue) {
+    public static int dip2px(Context context, double dpValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5);
     }
@@ -36,14 +36,14 @@ final class UIUtil {
      *
      * @return 屏幕宽度（单位：px）
      */
-    static int getScreenWidth(Context context) {
+    public static int getScreenWidth(Context context) {
         DisplayMetrics metric = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(metric);
         return metric.widthPixels;
     }
 
-    static ShapeDrawable getRoundRectShapeDrawable() {
+    public static ShapeDrawable getRoundRectShapeDrawable() {
         float r = 10;
         float[] outerR = new float[]{r, r, r, r, r, r, r, r};
         RoundRectShape rr = new RoundRectShape(outerR, null, null);
@@ -52,7 +52,7 @@ final class UIUtil {
         return drawable;
     }
 
-    static RotateAnimation getRotateAnimation() {
+    public static RotateAnimation getRotateAnimation() {
         RotateAnimation rotateAnimation = new RotateAnimation(0, 360, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
         rotateAnimation.setDuration(1200);
         rotateAnimation.setRepeatCount(Animation.INFINITE);
@@ -60,7 +60,7 @@ final class UIUtil {
         return rotateAnimation;
     }
 
-    static AlphaAnimation getInAlphaAnimation() {
+    public static AlphaAnimation getInAlphaAnimation() {
         AlphaAnimation inAnimation = new AlphaAnimation(0f, 1f);
         inAnimation.setInterpolator(new AccelerateInterpolator());
         inAnimation.setFillAfter(true);
@@ -68,7 +68,7 @@ final class UIUtil {
         return inAnimation;
     }
 
-    static AlphaAnimation getOutAlphaAnimation() {
+    public static AlphaAnimation getOutAlphaAnimation() {
         AlphaAnimation outAnimation = new AlphaAnimation(1f, 0f);
         outAnimation.setInterpolator(new DecelerateInterpolator());
         outAnimation.setDuration(300);

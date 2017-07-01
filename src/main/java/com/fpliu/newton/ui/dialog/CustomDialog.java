@@ -162,43 +162,43 @@ public class CustomDialog extends Dialog {
      * @param duration 显示的时间（单位：ms）
      */
     public void show(int gravity, int xOff, int yOff, long duration) {
+        if (!isShowing()) {
+            isShowing = true;
+            if (duration < 0) {
+                duration = 0;
+            }
+            show2(gravity, xOff, yOff, duration);
+        }
+    }
+
+    protected void show2(int gravity, int xOff, int yOff, long duration) {
+        show();
+
+        Window window = getWindow();
+        WindowManager.LayoutParams lp = window.getAttributes();
+
+        if (width != 0) {
+            lp.width = width;
+        }
+
+        if (height != 0) {
+            lp.height = height;
+        }
+
+        if (dimAmount < 0.1) {
+            dimAmount = 0.8f;
+        }
+
+        lp.dimAmount = dimAmount;
+
         if (gravity == Gravity.NO_GRAVITY) {
             gravity = Gravity.TOP | Gravity.LEFT;
         }
 
-        if (!isShowing()) {
-            isShowing = true;
-
-            Window window = getWindow();
-            WindowManager.LayoutParams lp = window.getAttributes();
-
-            if (width != 0) {
-                lp.width = width;
-            }
-
-            if (height != 0) {
-                lp.height = height;
-            }
-
-            if (dimAmount < 0.1) {
-                dimAmount = 0.8f;
-            }
-
-            lp.dimAmount = dimAmount;
-
-            lp.gravity = gravity;
-            lp.x = xOff;
-            lp.y = yOff;
-            window.setAttributes(lp);
-
-            if (duration >= 0) {
-                show(duration);
-            }
-        }
-    }
-
-    protected void show(long duration) {
-        show();
+        lp.gravity = gravity;
+        lp.x = xOff;
+        lp.y = yOff;
+        window.setAttributes(lp);
 
         if (duration == 0) {
             return;

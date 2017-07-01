@@ -106,9 +106,9 @@ public class RadioButtonDialogBuilder<T> extends CustomDialogBuilder<RadioButton
                     textView.setPadding(5, 10, 5, 10);
                     textView.setCompoundDrawablePadding(5);
                     if (selectedIndex == position) {
-                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.btn_radio_checked, 0, 0, 0);
+                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.cd_btn_radio_checked, 0, 0, 0);
                     } else {
-                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.btn_radio_unchecked, 0, 0, 0);
+                        textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.cd_btn_radio_unchecked, 0, 0, 0);
                     }
                     textView.setTag(position);
                     textView.setOnClickListener(onClickListener);

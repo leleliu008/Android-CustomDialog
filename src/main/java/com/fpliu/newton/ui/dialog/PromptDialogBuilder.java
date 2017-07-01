@@ -22,7 +22,7 @@ public class PromptDialogBuilder extends CustomDialogBuilder<PromptDialogBuilder
             editText = new EditText(getActivity());
             editText.setTextSize(18);
             editText.setTextColor(Color.parseColor("#222222"));
-            editText.setBackgroundResource(R.drawable.shape_rounded_rectangle_stoke_gray);
+            editText.setBackgroundResource(R.drawable.cd_shape_rounded_rectangle_stoke_gray);
 
             setView(editText);
         }
