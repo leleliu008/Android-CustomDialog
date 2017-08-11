@@ -190,9 +190,9 @@ public abstract class CustomDialogBuilder<T extends CustomDialogBuilder<T, V, Re
             messageTv.setGravity(Gravity.CENTER);
 
             if (TextUtils.isEmpty(title)) {
-                messageTv.setPadding(0, 2 * a, 0, a);
+                messageTv.setPadding(a, 2 * a, a, a);
             } else {
-                messageTv.setPadding(0, a, 0, a);
+                messageTv.setPadding(a, a, a, a);
             }
 
             layout.addView(messageTv, lp2);
@@ -258,6 +258,7 @@ public abstract class CustomDialogBuilder<T extends CustomDialogBuilder<T, V, Re
 
         dialog.setContentView(parentLayout);
         dialog.setCancelable(cancelable);
+        dialog.setCanceledOnTouchOutside(cancelable);
 
         if (inAnimation == null) {
             inAnimation = UIUtil.getInAlphaAnimation();

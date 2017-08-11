@@ -35,7 +35,7 @@ public class CircleProgressDialogBuilder extends CustomDialogBuilder<CircleProgr
             lp1.topMargin = margin;
             lp1.leftMargin = margin;
             lp1.rightMargin = margin;
-            lp1.bottomMargin = 2 * margin;
+            lp1.bottomMargin = margin;
 
             layout.addView(progressView, lp1);
 
