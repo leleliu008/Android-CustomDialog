@@ -12,8 +12,14 @@ import android.widget.LinearLayout;
  */
 public class CircleProgressDialogBuilder extends CustomDialogBuilder<CircleProgressDialogBuilder, LinearLayout, Object> {
 
+    private int progressImageId;
+
     public CircleProgressDialogBuilder(Activity activity) {
         super(activity);
+    }
+
+    public void setProgressImageId(int progressImageId) {
+        this.progressImageId = progressImageId;
     }
 
     @Override
@@ -25,7 +31,7 @@ public class CircleProgressDialogBuilder extends CustomDialogBuilder<CircleProgr
             layout.setGravity(Gravity.CENTER);
 
             ImageView progressView = new ImageView(activity);
-            progressView.setBackgroundResource(R.drawable.cd_progress_circle);
+            progressView.setBackgroundResource(progressImageId == 0 ? R.drawable.cd_progress_circle : progressImageId);
             progressView.startAnimation(UIUtil.getRotateAnimation());
 
             int width = UIUtil.dip2px(activity, 50);
