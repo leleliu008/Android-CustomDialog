@@ -173,7 +173,7 @@ public abstract class CustomDialogBuilder<T extends CustomDialogBuilder<T, V, Re
         if (!TextUtils.isEmpty(title)) {
             TextView titleTv = new TextView(activity);
             titleTv.setText(title);
-            titleTv.setTextSize(16);
+            titleTv.setTextSize(15);
             titleTv.setTextColor(Color.parseColor("#575757"));
             titleTv.setGravity(Gravity.CENTER);
             titleTv.setPadding(0, a, 0, a);
@@ -185,8 +185,8 @@ public abstract class CustomDialogBuilder<T extends CustomDialogBuilder<T, V, Re
         if (!TextUtils.isEmpty(message)) {
             messageTv = new TextView(activity);
             messageTv.setText(message);
-            messageTv.setTextSize(18);
-            messageTv.setTextColor(Color.parseColor("#797979"));
+            messageTv.setTextSize(14);
+            messageTv.setTextColor(Color.parseColor("#575757"));
             messageTv.setGravity(Gravity.CENTER);
 
             if (TextUtils.isEmpty(title)) {
@@ -213,7 +213,7 @@ public abstract class CustomDialogBuilder<T extends CustomDialogBuilder<T, V, Re
         footer.setOrientation(LinearLayout.HORIZONTAL);
         layout.addView(footer, lp2);
 
-        LinearLayout.LayoutParams lp3 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
+        LinearLayout.LayoutParams lp3 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, UIUtil.dip2px(activity, 32), 1);
         lp3.topMargin = a;
         lp3.leftMargin = a;
         lp3.rightMargin = a;
@@ -223,9 +223,9 @@ public abstract class CustomDialogBuilder<T extends CustomDialogBuilder<T, V, Re
             Button okBtn = new Button(activity);
             okBtn.setText(positiveButtonText);
             okBtn.setPadding(0, a, 0, a);
-            okBtn.setTextSize(18);
+            okBtn.setTextSize(14);
             okBtn.setTextColor(Color.WHITE);
-            okBtn.setBackgroundResource(R.drawable.cd_state_list_rounded_rectangle_solid_yellow);
+            okBtn.setBackgroundResource(R.drawable.cd_state_list_btn_orange);
             okBtn.setOnClickListener(v -> onPositiveButtonClick(dialog));
             footer.addView(okBtn, lp3);
         }
@@ -234,9 +234,9 @@ public abstract class CustomDialogBuilder<T extends CustomDialogBuilder<T, V, Re
             Button cancelBtn = new Button(activity);
             cancelBtn.setText(negativeButtonText);
             cancelBtn.setPadding(0, a, 0, a);
-            cancelBtn.setTextSize(18);
+            cancelBtn.setTextSize(14);
             cancelBtn.setTextColor(Color.WHITE);
-            cancelBtn.setBackgroundResource(R.drawable.cd_state_list_rounded_rectangle_solid_blue);
+            cancelBtn.setBackgroundResource(R.drawable.cd_state_list_btn_blue);
             cancelBtn.setOnClickListener(v -> onNegativeButtonClick(dialog));
 
             footer.addView(cancelBtn, lp3);
@@ -274,8 +274,8 @@ public abstract class CustomDialogBuilder<T extends CustomDialogBuilder<T, V, Re
             dialog.setWindowBackground(background);
         }
 
-        // 设置为屏幕宽度的9/10
-        dialog.setWindowWidth(UIUtil.getScreenWidth(activity) * 9 / 10);
+        // 设置为屏幕宽度的2/3
+        dialog.setWindowWidth(UIUtil.getScreenWidth(activity) * 2 / 3);
 
         return dialog;
     }

@@ -214,7 +214,7 @@ public class CustomDialog extends Dialog {
         try {
             super.show();
         } catch (Exception e) {
-            DebugLog.e(TAG, "show()", e);
+            e.printStackTrace();
         }
     }
 
@@ -238,7 +238,7 @@ public class CustomDialog extends Dialog {
             try {
                 dismiss();
             } catch (Exception e) {
-                DebugLog.e(TAG, "dismiss()", e);
+                e.printStackTrace();
             }
         }, delayedTime);
     }
@@ -263,17 +263,14 @@ public class CustomDialog extends Dialog {
 
                         @Override
                         public void onAnimationStart(Animation animation) {
-                            DebugLog.d(TAG, "onAnimationStart()");
                         }
 
                         @Override
                         public void onAnimationRepeat(Animation animation) {
-                            DebugLog.d(TAG, "onAnimationRepeat()");
                         }
 
                         @Override
                         public void onAnimationEnd(Animation animation) {
-                            DebugLog.d(TAG, "onAnimationEnd()");
                             CustomDialog.super.dismiss();
                             isDismissing = false;
                             isShowing = false;
@@ -291,8 +288,6 @@ public class CustomDialog extends Dialog {
 
     @Override
     public void dismiss() {
-        DebugLog.d(TAG, "dismiss()");
-
         dismiss(false);
     }
 

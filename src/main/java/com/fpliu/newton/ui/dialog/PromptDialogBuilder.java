@@ -20,8 +20,8 @@ public class PromptDialogBuilder extends CustomDialogBuilder<PromptDialogBuilder
         EditText editText = getView();
         if (editText == null) {
             editText = new EditText(getActivity());
-            editText.setTextSize(18);
-            editText.setTextColor(Color.parseColor("#222222"));
+            editText.setTextSize(14);
+            editText.setTextColor(Color.parseColor("#575757"));
             editText.setBackgroundResource(R.drawable.cd_shape_rounded_rectangle_stoke_gray);
 
             setView(editText);
