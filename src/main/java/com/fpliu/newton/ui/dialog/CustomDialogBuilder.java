@@ -201,7 +201,7 @@ public abstract class CustomDialogBuilder<T extends CustomDialogBuilder<T, V, Re
         if (view != null) {
             LinearLayout.LayoutParams lp3 = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
             if (TextUtils.isEmpty(title) && TextUtils.isEmpty(message)) {
-                lp3.topMargin = 2 * a;
+                lp3.topMargin = a;
                 lp3.bottomMargin = a;
             }
             lp3.leftMargin = a;
