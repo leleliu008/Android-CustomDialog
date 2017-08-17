@@ -225,6 +225,7 @@ public abstract class CustomDialogBuilder<T extends CustomDialogBuilder<T, V, Re
             okBtn.setPadding(0, a, 0, a);
             okBtn.setTextSize(14);
             okBtn.setTextColor(Color.WHITE);
+            okBtn.setPadding(a, 0, a, 0);
             okBtn.setBackgroundResource(R.drawable.cd_state_list_btn_orange);
             okBtn.setOnClickListener(v -> onPositiveButtonClick(dialog));
             footer.addView(okBtn, lp3);
@@ -236,6 +237,7 @@ public abstract class CustomDialogBuilder<T extends CustomDialogBuilder<T, V, Re
             cancelBtn.setPadding(0, a, 0, a);
             cancelBtn.setTextSize(14);
             cancelBtn.setTextColor(Color.WHITE);
+            cancelBtn.setPadding(a, 0, a, 0);
             cancelBtn.setBackgroundResource(R.drawable.cd_state_list_btn_blue);
             cancelBtn.setOnClickListener(v -> onNegativeButtonClick(dialog));
 
@@ -259,15 +261,7 @@ public abstract class CustomDialogBuilder<T extends CustomDialogBuilder<T, V, Re
         dialog.setContentView(parentLayout);
         dialog.setCancelable(cancelable);
         dialog.setCanceledOnTouchOutside(cancelable);
-
-        if (inAnimation == null) {
-            inAnimation = UIUtil.getInAlphaAnimation();
-        }
         dialog.setInAnimation(inAnimation);
-
-        if (outAnimation == null) {
-            outAnimation = UIUtil.getOutAlphaAnimation();
-        }
         dialog.setOutAnimation(outAnimation);
 
         if (background != null) {

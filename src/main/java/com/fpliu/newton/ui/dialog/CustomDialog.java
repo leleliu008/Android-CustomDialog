@@ -13,11 +13,8 @@ import android.view.View;
 import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
-import android.view.animation.DecelerateInterpolator;
-import android.view.animation.TranslateAnimation;
 
 /**
  * 自定义弹出框，可以设置背景的模糊效果
@@ -25,8 +22,6 @@ import android.view.animation.TranslateAnimation;
  * @author 792793182@qq.com 2014-12-19
  */
 public class CustomDialog extends Dialog {
-
-    private static final String TAG = CustomDialog.class.getSimpleName();
 
     private static final Handler handler = new Handler(Looper.getMainLooper());
 
@@ -309,8 +304,7 @@ public class CustomDialog extends Dialog {
      */
     protected Animation getInAnimation() {
         if (inAnimation == null) {
-            inAnimation = new AlphaAnimation(0, 1);
-            inAnimation.setDuration(500);
+            inAnimation = UIUtil.getInAlphaAnimation();
         }
         return inAnimation;
     }
@@ -320,12 +314,7 @@ public class CustomDialog extends Dialog {
      */
     protected Animation getOutAnimation() {
         if (outAnimation == null) {
-            outAnimation = new TranslateAnimation(Animation.RELATIVE_TO_SELF, 0,
-                    Animation.RELATIVE_TO_SELF, 0,
-                    Animation.RELATIVE_TO_SELF, 0,
-                    Animation.RELATIVE_TO_SELF, 1);
-            outAnimation.setInterpolator(new DecelerateInterpolator());
-            outAnimation.setDuration(300);
+            outAnimation = UIUtil.getOutAlphaAnimation();
         }
         return outAnimation;
     }
@@ -386,13 +375,6 @@ public class CustomDialog extends Dialog {
         super.onStart();
 
         View view = getWindow().getDecorView().findViewById(android.R.id.content);
-
-        Animation inAnimation = getInAnimation();
-        if (inAnimation == null) {
-            inAnimation = new AlphaAnimation(0, 1);
-            inAnimation.setDuration(500);
-        }
-
-        view.startAnimation(inAnimation);
+        view.startAnimation(getInAnimation());
     }
 }
