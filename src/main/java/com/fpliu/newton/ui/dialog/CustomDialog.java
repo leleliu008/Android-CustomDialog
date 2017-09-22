@@ -8,9 +8,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup.LayoutParams;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -25,7 +23,7 @@ public class CustomDialog extends Dialog {
 
     private static final Handler handler = new Handler(Looper.getMainLooper());
 
-    private View contentView;
+//    private View contentView;
 
     //是否是正在显示，因为显示的时候有动画过程
     private boolean isShowing;
@@ -37,13 +35,22 @@ public class CustomDialog extends Dialog {
 
     private int height;
 
+    private int gravity;
+
+    private int xOff;
+
+    private int yOff;
+
     private float dimAmount;
+
+    private long duration;
 
     private Activity activity;
 
     private Animation inAnimation;
 
     private Animation outAnimation;
+
 
     public CustomDialog(Activity activity) {
         this(activity, android.R.style.Theme_Dialog);
@@ -59,34 +66,6 @@ public class CustomDialog extends Dialog {
 
         //去掉标题栏，标题栏自定义
         requestWindowFeature(Window.FEATURE_NO_TITLE);
-    }
-
-    @Override
-    public void setContentView(int layoutResID) {
-        super.setContentView(layoutResID);
-        contentView = LayoutInflater.from(getContext()).inflate(layoutResID, null);
-    }
-
-    @Override
-    public void setContentView(View view) {
-        super.setContentView(view);
-        contentView = view;
-    }
-
-    @Override
-    public void setContentView(View view, LayoutParams params) {
-        super.setContentView(view, params);
-        contentView = view;
-    }
-
-    @Override
-    public void addContentView(View view, LayoutParams params) {
-        super.addContentView(view, params);
-        contentView = view;
-    }
-
-    public View getContentView() {
-        return contentView;
     }
 
     /**
@@ -132,9 +111,12 @@ public class CustomDialog extends Dialog {
         // 获取此view在屏幕上的位置
         anchorView.getLocationOnScreen(locationOfViewOnScreen);
 
-
         //以屏幕左上角为参照点
-        show(Gravity.LEFT | Gravity.TOP, locationOfViewOnScreen[0] + xOff, -locationOfViewOnScreen[1] + yOff, duration);
+        this.gravity = Gravity.LEFT | Gravity.TOP;
+        this.xOff = locationOfViewOnScreen[0] + xOff;
+        this.yOff = -locationOfViewOnScreen[1] + yOff;
+        this.duration = duration;
+        show();
     }
 
     /**
@@ -145,7 +127,10 @@ public class CustomDialog extends Dialog {
      * @param yOff    相对于gravity在Y方向上的偏移量
      */
     public void show(int gravity, int xOff, int yOff) {
-        show(gravity, xOff, yOff, 0);
+        this.gravity = gravity;
+        this.xOff = xOff;
+        this.yOff = yOff;
+        show();
     }
 
     /**
@@ -157,17 +142,20 @@ public class CustomDialog extends Dialog {
      * @param duration 显示的时间（单位：ms）
      */
     public void show(int gravity, int xOff, int yOff, long duration) {
-        if (!isShowing()) {
-            isShowing = true;
-            if (duration < 0) {
-                duration = 0;
-            }
-            show2(gravity, xOff, yOff, duration);
-        }
+        this.gravity = gravity;
+        this.xOff = xOff;
+        this.yOff = yOff;
+        this.duration = duration;
+        show();
     }
 
-    protected void show2(int gravity, int xOff, int yOff, long duration) {
-        show();
+    @Override
+    public void show() {
+        try {
+            super.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         Window window = getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
@@ -195,22 +183,11 @@ public class CustomDialog extends Dialog {
         lp.y = yOff;
         window.setAttributes(lp);
 
-        if (duration == 0) {
+        if (duration <= 0) {
             return;
-        } else if (duration < 100) {
-            duration = 1000;
         }
 
         dismiss(duration);
-    }
-
-    @Override
-    public void show() {
-        try {
-            super.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -271,7 +248,7 @@ public class CustomDialog extends Dialog {
                             isShowing = false;
                         }
                     });
-                    contentView.startAnimation(outAnimation);
+                    getWindow().getDecorView().findViewById(android.R.id.content).startAnimation(outAnimation);
                 }
             } else {
                 CustomDialog.super.dismiss();
@@ -374,7 +351,6 @@ public class CustomDialog extends Dialog {
     protected void onStart() {
         super.onStart();
 
-        View view = getWindow().getDecorView().findViewById(android.R.id.content);
-        view.startAnimation(getInAnimation());
+        getWindow().getDecorView().findViewById(android.R.id.content).startAnimation(getInAnimation());
     }
 }
