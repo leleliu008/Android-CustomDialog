@@ -35,7 +35,7 @@ public class CustomDialog extends Dialog {
 
     private int height;
 
-    private int gravity;
+    private int gravity = Gravity.CENTER;
 
     private int xOff;
 
