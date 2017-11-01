@@ -12,7 +12,7 @@ import java.util.Locale;
  *
  * @author 792793182@qq.com 2016-04-23.
  */
-public class DataSelectDialogBuilder extends CustomDialogBuilder<DataSelectDialogBuilder, LinearLayout, Calendar> {
+public class DateSelectDialogBuilder extends CustomDialogBuilder<DateSelectDialogBuilder, LinearLayout, int[]> {
 
     private long initDate;
 
@@ -22,11 +22,11 @@ public class DataSelectDialogBuilder extends CustomDialogBuilder<DataSelectDialo
 
     private NumberPicker dayPicker;
 
-    public DataSelectDialogBuilder(Activity activity) {
+    public DateSelectDialogBuilder(Activity activity) {
         super(activity);
     }
 
-    public DataSelectDialogBuilder setInitDate(long initDate) {
+    public DateSelectDialogBuilder setInitDate(long initDate) {
         this.initDate = initDate;
         return this;
     }
@@ -87,12 +87,8 @@ public class DataSelectDialogBuilder extends CustomDialogBuilder<DataSelectDialo
     }
 
     @Override
-    protected Calendar getResult() {
-        Calendar calendar = Calendar.getInstance(Locale.getDefault());
-        calendar.set(Calendar.YEAR, yearPicker.getValue());
-        calendar.set(Calendar.MONTH, monthPicker.getValue());
-        calendar.set(Calendar.DAY_OF_MONTH, dayPicker.getValue());
-        return calendar;
+    protected int[] getResult() {
+        return new int[]{yearPicker.getValue(), monthPicker.getValue(), dayPicker.getValue()};
     }
 
     private String[] getDisplayedValues(int min, int max, String stuff) {
