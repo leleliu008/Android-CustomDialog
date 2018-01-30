@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -20,6 +21,8 @@ public class CocoaDialogBuilder<T> extends CustomDialogBuilder<CocoaDialogBuilde
 
     protected List<Action<T>> actionItems;
 
+    private ActionListener<T> actionListener;
+
     private ActionAdapter<T> actionAdapter;
 
     private T selectedItem;
@@ -28,6 +31,26 @@ public class CocoaDialogBuilder<T> extends CustomDialogBuilder<CocoaDialogBuilde
 
     public CocoaDialogBuilder(Activity activity) {
         super(activity);
+    }
+
+    public CocoaDialogBuilder setActions(T... items) {
+        setActions(Arrays.asList(items));
+        return this;
+    }
+
+    public CocoaDialogBuilder setActions(List<T> items) {
+        if (actionItems == null) {
+            actionItems = new ArrayList<>();
+        }
+        for (int i = 0; i < items.size(); i++) {
+            actionItems.add(new Action<T>(items.get(i), null));
+        }
+        return this;
+    }
+
+    public CocoaDialogBuilder setActionListener(ActionListener<T> actionListener) {
+        this.actionListener = actionListener;
+        return this;
     }
 
     public CocoaDialogBuilder addAction(T item, ActionListener<T> actionListener) {
@@ -55,11 +78,19 @@ public class CocoaDialogBuilder<T> extends CustomDialogBuilder<CocoaDialogBuilde
             int size = actionItems.size();
             for (int i = 0; i < size; i++) {
                 Action<T> action = actionItems.get(i);
-                View convertView = actionAdapter.getView(action.actionData, i, linearLayout);
-                if (action.actionListener != null) {
+                View convertView = actionAdapter.getView(i, action.actionData, linearLayout);
+                convertView.setTag(i);
+                if (action.actionListener == null) {
+                    if (CocoaDialogBuilder.this.actionListener != null) {
+                        convertView.setOnClickListener(view -> {
+                            dialog.dismiss();
+                            CocoaDialogBuilder.this.actionListener.onActionClicked((Integer) convertView.getTag(), action.actionData);
+                        });
+                    }
+                } else {
                     convertView.setOnClickListener(view -> {
                         dialog.dismiss();
-                        action.actionListener.onActionClicked(action.actionData);
+                        action.actionListener.onActionClicked((Integer) convertView.getTag(), action.actionData);
                     });
                 }
                 linearLayout.addView(convertView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
@@ -80,7 +111,7 @@ public class CocoaDialogBuilder<T> extends CustomDialogBuilder<CocoaDialogBuilde
 
             TextView cancelActionTv = new TextView(activity);
             cancelActionTv.setText("取消");
-            cancelActionTv.setTextSize(18);
+            cancelActionTv.setTextSize(15);
             cancelActionTv.setGravity(Gravity.CENTER);
             cancelActionTv.setTextColor(Color.BLACK);
             cancelActionTv.setPadding(0, padding, 0, padding);
@@ -96,7 +127,7 @@ public class CocoaDialogBuilder<T> extends CustomDialogBuilder<CocoaDialogBuilde
 
         dialog = super.create();
         dialog.setWindowWidth(UIUtil.getScreenWidth(activity));
-        ((ViewGroup)linearLayout.getParent()).setBackgroundColor(Color.TRANSPARENT);
+        ((ViewGroup) linearLayout.getParent()).setBackgroundColor(Color.TRANSPARENT);
         return dialog;
     }
 
@@ -125,10 +156,10 @@ public class CocoaDialogBuilder<T> extends CustomDialogBuilder<CocoaDialogBuilde
     }
 
     public interface ActionListener<T> {
-        void onActionClicked(T item);
+        void onActionClicked(int position, T actionData);
     }
 
     public interface ActionAdapter<T> {
-        View getView(T actionData, int position, ViewGroup parent);
+        View getView(int position, T actionData, ViewGroup parent);
     }
 }

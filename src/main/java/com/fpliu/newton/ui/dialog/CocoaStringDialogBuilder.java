@@ -5,6 +5,8 @@ import android.graphics.Color;
 import android.view.Gravity;
 import android.widget.TextView;
 
+import java.util.List;
+
 /**
  * 仿iOS的Dialog
  *
@@ -20,19 +22,45 @@ public class CocoaStringDialogBuilder extends CocoaDialogBuilder<String> {
         super(activity);
     }
 
-    public void setTextColor(int textColor) {
-        this.textColor = textColor;
+    @Override
+    public CocoaStringDialogBuilder setActions(String... items) {
+        super.setActions(items);
+        return this;
     }
 
-    public void setTextSizeSp(int textSize) {
+    @Override
+    public CocoaStringDialogBuilder setActions(List<String> items) {
+        super.setActions(items);
+        return this;
+    }
+
+    @Override
+    public CocoaStringDialogBuilder addAction(String item, ActionListener<String> actionListener) {
+        super.addAction(item, actionListener);
+        return this;
+    }
+
+    @Override
+    public CocoaStringDialogBuilder setActionListener(ActionListener<String> actionListener) {
+        super.setActionListener(actionListener);
+        return this;
+    }
+
+    public CocoaStringDialogBuilder setTextColor(int textColor) {
+        this.textColor = textColor;
+        return this;
+    }
+
+    public CocoaStringDialogBuilder setTextSizeSp(int textSize) {
         this.textSize = textSize;
+        return this;
     }
 
     @Override
     public CustomDialog create() {
         Activity activity = getActivity();
         int padding = UIUtil.dip2px(activity, 15);
-        setActionAdapter((actionData, position, parent) -> {
+        setActionAdapter((position, actionData, parent) -> {
             TextView actionTv = new TextView(activity);
             actionTv.setText(actionData);
             actionTv.setGravity(Gravity.CENTER);
@@ -40,12 +68,6 @@ public class CocoaStringDialogBuilder extends CocoaDialogBuilder<String> {
             actionTv.setTextSize(textSize);
             actionTv.setTextColor(textColor);
             actionTv.setPadding(0, padding, 0, padding);
-            actionTv.setBackgroundResource(R.drawable.cd_shape_rounded_rectangle_solid_white_conner_all);
-
-            ActionListener<String> actionListener = actionItems.get(position).getActionListener();
-            if (actionListener != null) {
-                actionTv.setOnClickListener(view -> actionListener.onActionClicked(actionData));
-            }
             return actionTv;
         });
         return super.create();
