@@ -47,7 +47,6 @@ public class CocoaDialogBuilder<T> extends CustomDialogBuilder<CocoaDialogBuilde
     public CustomDialog create() {
         Activity activity = getActivity();
         int padding = UIUtil.dip2px(activity, 15);
-
         LinearLayout linearLayout = getView();
         if (linearLayout == null) {
             linearLayout = new LinearLayout(activity);
@@ -58,16 +57,34 @@ public class CocoaDialogBuilder<T> extends CustomDialogBuilder<CocoaDialogBuilde
                 Action<T> action = actionItems.get(i);
                 View convertView = actionAdapter.getView(action.actionData, i, linearLayout);
                 if (action.actionListener != null) {
-                    convertView.setOnClickListener(view -> action.actionListener.onActionClicked(action.actionData));
+                    convertView.setOnClickListener(view -> {
+                        dialog.dismiss();
+                        action.actionListener.onActionClicked(action.actionData);
+                    });
                 }
                 linearLayout.addView(convertView, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+                if (i == 0) {
+                    convertView.setBackgroundResource(R.drawable.cd_shape_rounded_rectangle_solid_white_conner_top);
+                    View view = new View(activity);
+                    view.setBackgroundResource(R.color.cd_line);
+                    linearLayout.addView(view, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
+                } else if (i == size - 1) {
+                    convertView.setBackgroundResource(R.drawable.cd_shape_rounded_rectangle_solid_white_conner_bottom);
+                } else {
+                    convertView.setBackgroundResource(R.drawable.cd_shape_rounded_rectangle_solid_white_conner_none);
+                    View view = new View(activity);
+                    view.setBackgroundResource(R.color.cd_line);
+                    linearLayout.addView(view, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, 1));
+                }
             }
 
             TextView cancelActionTv = new TextView(activity);
             cancelActionTv.setText("取消");
+            cancelActionTv.setTextSize(18);
             cancelActionTv.setGravity(Gravity.CENTER);
             cancelActionTv.setTextColor(Color.BLACK);
-            cancelActionTv.setBackgroundResource(R.drawable.cd_shape_rounded_rectangle_solid_white);
+            cancelActionTv.setPadding(0, padding, 0, padding);
+            cancelActionTv.setBackgroundResource(R.drawable.cd_shape_rounded_rectangle_solid_white_conner_all);
             cancelActionTv.setOnClickListener(view -> dialog.dismiss());
 
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
@@ -77,7 +94,10 @@ public class CocoaDialogBuilder<T> extends CustomDialogBuilder<CocoaDialogBuilde
             setView(linearLayout);
         }
 
-        return (dialog = super.create());
+        dialog = super.create();
+        dialog.setWindowWidth(UIUtil.getScreenWidth(activity));
+        ((ViewGroup)linearLayout.getParent()).setBackgroundColor(Color.TRANSPARENT);
+        return dialog;
     }
 
 
