@@ -49,10 +49,10 @@ public class CocoaDialogBuilder<T> extends CustomDialogBuilder<CocoaDialogBuilde
         int padding = UIUtil.dip2px(activity, 15);
 
         LinearLayout linearLayout = getView();
-        linearLayout.setOrientation(LinearLayout.VERTICAL);
-        linearLayout.setPadding(padding, 0, padding, padding);
-
         if (linearLayout == null) {
+            linearLayout = new LinearLayout(activity);
+            linearLayout.setOrientation(LinearLayout.VERTICAL);
+            linearLayout.setPadding(padding, 0, padding, padding);
             int size = actionItems.size();
             for (int i = 0; i < size; i++) {
                 Action<T> action = actionItems.get(i);

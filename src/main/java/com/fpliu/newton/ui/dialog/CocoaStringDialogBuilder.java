@@ -10,7 +10,7 @@ import android.widget.TextView;
  *
  * @author 792793182@qq.com 2016-04-23.
  */
-public class CocoaStringDialogBuilder<T> extends CocoaDialogBuilder<String> {
+public class CocoaStringDialogBuilder extends CocoaDialogBuilder<String> {
 
     public CocoaStringDialogBuilder(Activity activity) {
         super(activity);
