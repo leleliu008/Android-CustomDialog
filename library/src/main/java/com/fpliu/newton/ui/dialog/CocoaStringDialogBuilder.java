@@ -18,8 +18,11 @@ public class CocoaStringDialogBuilder extends CocoaDialogBuilder<String> {
 
     private int textSize = 17;
 
+    private int padding;
+
     public CocoaStringDialogBuilder(Activity activity) {
         super(activity);
+        padding = UIUtil.dip2px(activity, 15);
     }
 
     @Override
@@ -56,10 +59,14 @@ public class CocoaStringDialogBuilder extends CocoaDialogBuilder<String> {
         return this;
     }
 
+    public CocoaStringDialogBuilder setPadding(int padding) {
+        this.padding = padding;
+        return this;
+    }
+
     @Override
     public CustomDialog create() {
         Activity activity = getActivity();
-        int padding = UIUtil.dip2px(activity, 15);
         setActionAdapter((position, actionData, parent) -> {
             TextView actionTv = new TextView(activity);
             actionTv.setText(actionData);
