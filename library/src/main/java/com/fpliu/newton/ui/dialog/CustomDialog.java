@@ -155,6 +155,7 @@ public class CustomDialog extends Dialog {
             super.show();
         } catch (Exception e) {
             e.printStackTrace();
+            return;
         }
 
         Window window = getWindow();
