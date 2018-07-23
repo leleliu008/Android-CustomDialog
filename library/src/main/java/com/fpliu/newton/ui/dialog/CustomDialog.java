@@ -2,6 +2,8 @@ package com.fpliu.newton.ui.dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -14,6 +16,8 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 
+import java.util.concurrent.atomic.AtomicReference;
+
 /**
  * 自定义弹出框，可以设置背景的模糊效果
  *
@@ -21,15 +25,16 @@ import android.view.animation.Animation.AnimationListener;
  */
 public class CustomDialog extends Dialog {
 
-    private static final Handler handler = new Handler(Looper.getMainLooper());
+    private static final Handler mainHandler = new Handler(Looper.getMainLooper());
 
-//    private View contentView;
+    private enum State {
+        ANIM_TO_SHOW,   //正在显示进入动画过程
+        SHOW_ING,       //正在显示
+        ANIM_TO_DISMISS,//正在显示退出动画过程
+        DISMISS_ING     //不显示状态
+    }
 
-    //是否是正在显示，因为显示的时候有动画过程
-    private boolean isShowing;
-
-    //是否是正在消失，因为显消失的时候有动画过程
-    private boolean isDismissing;
+    private AtomicReference<State> currentState = new AtomicReference(State.DISMISS_ING);
 
     private int width;
 
@@ -45,12 +50,11 @@ public class CustomDialog extends Dialog {
 
     private long duration;
 
-    private Activity activity;
-
     private Animation inAnimation;
 
     private Animation outAnimation;
 
+    private OnDismissListener onDismissListener;
 
     public CustomDialog(Activity activity) {
         this(activity, android.R.style.Theme_Dialog);
@@ -59,13 +63,19 @@ public class CustomDialog extends Dialog {
     public CustomDialog(Activity activity, int theme) {
         super(activity, theme);
 
-        this.activity = activity;
-
         //默认背景是透明的
         setWindowBackgroundColor(Color.TRANSPARENT);
 
         //去掉标题栏，标题栏自定义
         requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        super.setOnDismissListener(dialog -> {
+            currentState.set(State.DISMISS_ING);
+            if (onDismissListener != null) {
+                onDismissListener.onDismiss(dialog);
+            }
+            onDismissed();
+        });
     }
 
     /**
@@ -107,6 +117,8 @@ public class CustomDialog extends Dialog {
      * @param duration   显示的时间（单位：ms）
      */
     public void show(View anchorView, int xOff, int yOff, int duration) {
+        currentState.set(State.ANIM_TO_SHOW);
+
         int[] locationOfViewOnScreen = new int[2];
         // 获取此view在屏幕上的位置
         anchorView.getLocationOnScreen(locationOfViewOnScreen);
@@ -127,6 +139,7 @@ public class CustomDialog extends Dialog {
      * @param yOff    相对于gravity在Y方向上的偏移量
      */
     public void show(int gravity, int xOff, int yOff) {
+        currentState.set(State.ANIM_TO_SHOW);
         this.gravity = gravity;
         this.xOff = xOff;
         this.yOff = yOff;
@@ -142,6 +155,7 @@ public class CustomDialog extends Dialog {
      * @param duration 显示的时间（单位：ms）
      */
     public void show(int gravity, int xOff, int yOff, long duration) {
+        currentState.set(State.ANIM_TO_SHOW);
         this.gravity = gravity;
         this.xOff = xOff;
         this.yOff = yOff;
@@ -151,12 +165,16 @@ public class CustomDialog extends Dialog {
 
     @Override
     public void show() {
+        currentState.set(State.ANIM_TO_SHOW);
         try {
             super.show();
         } catch (Exception e) {
             e.printStackTrace();
+            currentState.set(State.DISMISS_ING);
             return;
         }
+
+        currentState.set(State.SHOW_ING);
 
         Window window = getWindow();
         WindowManager.LayoutParams lp = window.getAttributes();
@@ -167,10 +185,6 @@ public class CustomDialog extends Dialog {
 
         if (height != 0) {
             lp.height = height;
-        }
-
-        if (dimAmount < 0.1) {
-            dimAmount = 0.8f;
         }
 
         lp.dimAmount = dimAmount;
@@ -198,7 +212,7 @@ public class CustomDialog extends Dialog {
      * @param hasAnimation 是否有退出动画
      */
     public void dismiss(long delayedTime, final boolean hasAnimation) {
-        handler.postDelayed(() -> dismiss(hasAnimation), delayedTime);
+        mainHandler.postDelayed(() -> dismiss(hasAnimation), delayedTime);
     }
 
     /**
@@ -207,7 +221,7 @@ public class CustomDialog extends Dialog {
      * @param delayedTime 延迟关闭的时间,单位是ms
      */
     public void dismiss(long delayedTime) {
-        handler.postDelayed(() -> {
+        mainHandler.postDelayed(() -> {
             try {
                 dismiss();
             } catch (Exception e) {
@@ -222,15 +236,11 @@ public class CustomDialog extends Dialog {
      * @param hasAnimation 是否有退出动画
      */
     public void dismiss(boolean hasAnimation) {
-        if (!isDismissing) {
-            isDismissing = true;
-
+        if (currentState.compareAndSet(State.SHOW_ING, State.ANIM_TO_DISMISS)) {
             if (hasAnimation) {
                 Animation outAnimation = getOutAnimation();
                 if (outAnimation == null) {
                     CustomDialog.super.dismiss();
-                    isDismissing = false;
-                    isShowing = false;
                 } else {
                     outAnimation.setAnimationListener(new AnimationListener() {
 
@@ -245,16 +255,12 @@ public class CustomDialog extends Dialog {
                         @Override
                         public void onAnimationEnd(Animation animation) {
                             CustomDialog.super.dismiss();
-                            isDismissing = false;
-                            isShowing = false;
                         }
                     });
                     getWindow().getDecorView().findViewById(android.R.id.content).startAnimation(outAnimation);
                 }
             } else {
                 CustomDialog.super.dismiss();
-                isDismissing = false;
-                isShowing = false;
             }
         }
     }
@@ -266,7 +272,8 @@ public class CustomDialog extends Dialog {
 
     @Override
     public boolean isShowing() {
-        return isShowing || super.isShowing();
+        State state = currentState.get();
+        return state == State.ANIM_TO_SHOW || state == State.SHOW_ING;
     }
 
     public void setInAnimation(Animation inAnimation) {
@@ -339,10 +346,19 @@ public class CustomDialog extends Dialog {
     }
 
     public final Activity getActivity() {
-        return activity;
+        Context context = getContext();
+        while (context instanceof ContextWrapper) {
+            if (context instanceof Activity) {
+                return (Activity) context;
+            } else {
+                context = ((ContextWrapper) context).getBaseContext();
+            }
+        }
+        return null;
     }
 
     public final void runOnUiThread(Runnable runnable) {
+        Activity activity = getActivity();
         if (activity != null && !activity.isFinishing()) {
             activity.runOnUiThread(runnable);
         }
@@ -351,7 +367,18 @@ public class CustomDialog extends Dialog {
     @Override
     protected void onStart() {
         super.onStart();
+        Animation inAnimation = getInAnimation();
+        if (inAnimation != null) {
+            getWindow().getDecorView().findViewById(android.R.id.content).startAnimation(inAnimation);
+        }
+    }
 
-        getWindow().getDecorView().findViewById(android.R.id.content).startAnimation(getInAnimation());
+    protected void onDismissed() {
+
+    }
+
+    @Override
+    public void setOnDismissListener(OnDismissListener listener) {
+        onDismissListener = listener;
     }
 }

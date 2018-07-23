@@ -1,6 +1,7 @@
 package com.fpliu.newton.ui.dialog.sample
 
 import android.os.Bundle
+import android.view.Gravity
 import com.fpliu.newton.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -15,7 +16,7 @@ class MainActivity : BaseActivity() {
         title = "自定义弹出框使用示例"
         setContentView(R.layout.activity_main)
         click(xx).subscribe {
-
+            MyDialog(this).show(Gravity.CENTER, 0, 0)
         }
     }
 }
