@@ -16,6 +16,8 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -54,7 +56,7 @@ public class CustomDialog extends Dialog {
 
     private Animation outAnimation;
 
-    private OnDismissListener onDismissListener;
+    private List<OnDismissListener> onDismissListeners = new ArrayList<>();
 
     public CustomDialog(Activity activity) {
         this(activity, android.R.style.Theme_Dialog);
@@ -71,8 +73,10 @@ public class CustomDialog extends Dialog {
 
         super.setOnDismissListener(dialog -> {
             currentState.set(State.DISMISS_ING);
-            if (onDismissListener != null) {
-                onDismissListener.onDismiss(dialog);
+            for (OnDismissListener onDismissListener: onDismissListeners) {
+                if (onDismissListener != null) {
+                    onDismissListener.onDismiss(dialog);
+                }
             }
             onDismissed();
         });
@@ -379,6 +383,19 @@ public class CustomDialog extends Dialog {
 
     @Override
     public void setOnDismissListener(OnDismissListener listener) {
-        onDismissListener = listener;
+        if (listener != null) {
+            onDismissListeners.add(listener);
+        }
+    }
+
+    public void removeOnDismissListener(OnDismissListener listener) {
+        if (listener != null) {
+            onDismissListeners.remove(listener);
+        }
+    }
+
+    public void clearAllOnDismissListener() {
+        onDismissListeners.clear();
+        super.setOnDismissListener(null);
     }
 }
