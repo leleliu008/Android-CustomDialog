@@ -16,8 +16,8 @@ import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.Animation.AnimationListener;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
@@ -48,7 +48,7 @@ public class CustomDialog extends Dialog {
 
     private int yOff;
 
-    private float dimAmount;
+    private float dimAmount = 0.6f;
 
     private long duration;
 
@@ -56,7 +56,7 @@ public class CustomDialog extends Dialog {
 
     private Animation outAnimation;
 
-    private List<OnDismissListener> onDismissListeners = new ArrayList<>();
+    private List<OnDismissListener> onDismissListeners = new CopyOnWriteArrayList<>();
 
     public CustomDialog(Activity activity) {
         this(activity, android.R.style.Theme_Dialog);
@@ -73,7 +73,7 @@ public class CustomDialog extends Dialog {
 
         super.setOnDismissListener(dialog -> {
             currentState.set(State.DISMISS_ING);
-            for (OnDismissListener onDismissListener: onDismissListeners) {
+            for (OnDismissListener onDismissListener : onDismissListeners) {
                 if (onDismissListener != null) {
                     onDismissListener.onDismiss(dialog);
                 }

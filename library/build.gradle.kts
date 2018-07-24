@@ -79,5 +79,5 @@ bintrayUploadExtension {
     bintrayUserName = "fpliu"
     bintrayOrganizationName = "fpliu"
     bintrayRepositoryName = "newton"
-    bintrayApiKey = "xxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+    bintrayApiKey = "222d67ace202bdadda75b3ded41680be2efe1b4c"
 }
