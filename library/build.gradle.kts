@@ -30,13 +30,12 @@ plugins {
 
 android {
     compileSdkVersion(27)
-    buildToolsVersion("27.0.3")
 
     defaultConfig {
-        minSdkVersion (11)
-        targetSdkVersion (25)
-        versionCode = 1
-        versionName = "1.0.0"
+        minSdkVersion(11)
+        targetSdkVersion(25)
+        versionCode = 2
+        versionName = "1.0.1"
     }
 
     sourceSets {
@@ -55,7 +54,8 @@ android {
     lintOptions {
         isAbortOnError = false
     }
-	compileOptions {//使用JAVA8语法解析
+    compileOptions {
+        //使用JAVA8语法解析
         setSourceCompatibility(JavaVersion.VERSION_1_8)
         setTargetCompatibility(JavaVersion.VERSION_1_8)
     }
@@ -65,7 +65,7 @@ android {
 group = "com.fpliu"
 
 //这个是版本号，必须填写
-version = "1.0.0"
+version = android.defaultConfig.versionName ?: "1.0.0"
 
 val rootProjectName: String = project.rootProject.name
 
@@ -79,5 +79,5 @@ bintrayUploadExtension {
     bintrayUserName = "fpliu"
     bintrayOrganizationName = "fpliu"
     bintrayRepositoryName = "newton"
-    bintrayApiKey = "222d67ace202bdadda75b3ded41680be2efe1b4c"
+    bintrayApiKey = "xxx"
 }

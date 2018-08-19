@@ -311,15 +311,22 @@ public class CustomDialog extends Dialog {
     /**
      * 设置Window的背景
      */
-    public final void setWindowBackground(Drawable background) {
-        getWindow().setBackgroundDrawable(background);
+    public final void setWindowBackground(Drawable drawable) {
+        getWindow().setBackgroundDrawable(drawable);
     }
 
     /**
      * 设置Window的背景颜色
      */
-    public final void setWindowBackgroundColor(int bgColor) {
-        getWindow().setBackgroundDrawable(new ColorDrawable(bgColor));
+    public final void setWindowBackgroundColor(int color) {
+        getWindow().setBackgroundDrawable(new ColorDrawable(color));
+    }
+
+    /**
+     * 设置Window的背景颜色
+     */
+    public final void setWindowBackgroundColorRes(int colorRes) {
+        setWindowBackgroundColor(getContext().getResources().getColor(colorRes));
     }
 
     /**
